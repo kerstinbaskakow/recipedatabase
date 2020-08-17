@@ -25,6 +25,24 @@
                             {{form.title(class="form-control from-control-lg")}}
                         {%endif%}
                     </div>
+                    
+                    <form class="form-inline">
+                          <div class="form-group">
+                       {{ form.hidden_tag() }}
+                        {{ form.ingredients.label }} 
+                        {{ form.ingredients.label }} 
+                        {{ form.ingredients.label }} 
+                        </div>
+                        
+                         <div class="form-group">
+                      {{ form.ingredients(size=20) }}
+                      {{ form.ingredients(size=20) }}
+                        {{ form.ingredients(size=20) }}
+                        </div>
+      
+                    </form>
+                    
+                    
                     <div class ="form-group">
                         {{form.content.label(class="form-control-label")}}
                                                 <!-- only if we have errors -->
