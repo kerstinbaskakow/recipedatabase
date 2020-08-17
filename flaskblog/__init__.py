@@ -12,7 +12,7 @@ from flask_mail import Mail
 from flaskblog.config import Config
 from sqlalchemy import create_engine
 from datetime import datetime
-import pandas as pd
+#import pandas as pd
 from dateutil.relativedelta import relativedelta
 from pathlib import Path
 
