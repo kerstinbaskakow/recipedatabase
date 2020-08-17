@@ -13,8 +13,9 @@ app = create_app()
 
 if __name__ == "__main__":
     
-    app.run(debug=False, host='192.168.2.118')
-
+    #activate this to run it on raspberry
+    #app.run(debug=False, host='192.168.2.118')
+    app.run(debug=True)
 
 #start the webserver for the first time
     #start the command line,
