@@ -1,0 +1,71 @@
+<!-- extends is a keyword that this document should be used by layout.html-->
+{%extends"layout.html"%}
+<!-- to be used it needs to be wraped in a content block-->
+{%block content%}
+    <!-- display the current user's username, email and picture-->
+    <div class="content-section">
+      <div class="media">
+        <img class="rounded-circle account-img" src="{{image_file}}">
+        <div class="media-body">
+          <h2 class="account-heading">{{current_user.username}}</h2>
+          <p class="text-secondary">{{current_user.email}}</p>
+        </div>
+      </div>
+      <!-- if there is a FileField form dont forget enctype ="multipart/form-data" !!!! -->
+        <form method ="POST" action="" enctype ="multipart/form-data">
+                <!-- doble curlybraces: access variables through a template-->
+    <!-- adding a csrf token or cross side request forgery token, this is part of the protection agains attacks-->
+            {{form.hidden_tag()}}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Account Info</legend>
+                <div class ="form-group">
+                    {{form.username.label(class="form-control-label")}}
+                    <!-- only if we have errors -->
+                    {%if form.username.errors%}
+                        <!-- username field as it is and in case that it is invalid, add an invalid class tho that field-->
+                        {{form.username(class="form-control from-control-lg is-invalid")}}
+                        <div class="invalid-feedback">
+                            {%for error in form.username.errors%}
+                                <span>{{error}}</span>
+                            {%endfor%}
+                        </div>
+                    {%else%}
+                        {{form.username(class="form-control from-control-lg")}}
+                    {%endif%}
+                </div>
+                <div class ="form-group">
+                    {{form.email.label(class="form-control-label")}}
+                    <!-- only if we have errors -->
+                    {%if form.email.errors%}
+                        <!-- username field as it is and in case that it is invalid, add an invalid class tho that field-->
+                        {{form.email(class="form-control from-control-lg is-invalid")}}
+                        <div class="invalid-feedback">
+                            {%for error in form.email.errors%}
+                                <span>{{error}}</span>
+                            {%endfor%}
+                        </div>
+                    {%else%}
+                        {{form.email(class="form-control from-control-lg")}}
+                    {%endif%}
+                </div>
+                <div class ="form-group">
+                    <!-- label of the form entry -->
+                    {{form.picture.label()}}
+                    <!-- entry field "Durchsuchen"-->
+                    {{form.picture(class="form-control-file")}}
+                    {% if form.picture.errors%}
+                        {% for error in form.picture.errors%}
+                            <span class = "text-danger">{{error}}</span></br>
+                        {% endfor %}
+                    {% endif %}
+                    
+                </div>
+            </fieldset>
+            <div class="form-group">
+                {{form.submit(class="btn btn-outline-info")}}
+            </div>  
+        </form>
+    </div>
+
+
+{%endblock content%}

@@ -1,0 +1,64 @@
+<!-- extends is a keyword that this document should be used by layout.html-->
+{%extends"layout.html"%}
+<!-- to be used it needs to be wraped in a content block-->
+{%block content%}
+        <div class ="content-section">
+            <form method ="POST" action="">
+                    <!-- doble curlybraces: access variables through a template-->
+        <!-- adding a csrf token or cross side request forgery token, this is part of the protection agains attacks-->
+                {{form.hidden_tag()}}
+                <fieldset class="form-group">
+                    <legend class="border-bottom mb-4">Log In!</legend>
+
+                    <div class ="form-group">
+                        {{form.email.label(class="form-control-label")}}
+                        <!-- only if we have errors -->
+                        {%if form.email.errors%}
+                            <!-- username field as it is and in case that it is invalid, add an invalid class tho that field-->
+                            {{form.email(class="form-control from-control-lg is-invalid")}}
+                            <div class="invalid-feedback">
+                                {%for error in form.email.errors%}
+                                    <span>{{error}}</span>
+                                {%endfor%}
+                            </div>
+                        {%else%}
+                            {{form.email(class="form-control from-control-lg")}}
+                        {%endif%}
+                    </div>
+                    <div class ="form-group">
+                        {{form.password.label(class="form-control-label")}}
+                                                <!-- only if we have errors -->
+                        {%if form.password.errors%}
+                            <!-- username field as it is and in case that it is invalid, add an invalid class tho that field-->
+                            {{form.password(class="form-control from-control-lg is-invalid")}}
+                            <div class="invalid-feedback">
+                                {%for error in form.password.errors%}
+                                    <span>{{error}}</span>
+                                {%endfor%}
+                            </div>
+                        {%else%}
+                            {{form.password(class="form-control from-control-lg")}}
+                        {%endif%}
+                    </div>
+                    <div class="form-check">
+                        {{form.remember(class="form-check-input")}}
+                        {{form.remember.label(class="form-check-label")}}
+                    </div>
+                </fieldset>
+                <div class="form-group">
+                    {{form.submit(class="btn btn-outline-info")}}
+                    <small class="text-muted" ml-2">
+                        <a href="{{url_for('users.reset_request')}}">Forgot Password?</a>
+                    </small>
+                </div>  
+
+            </form>
+    </div>
+    <div class="border-top pt-3">
+        <!-- small: kleiner text-->
+        <small class="text-muted">
+                                    <!-- a is an anchor tag -->
+            Need an account? <a class="ml-2" href="{{url_for('users.register')}}">Sign up now!</a>
+        </small>
+    </div>
+{%endblock content%}
