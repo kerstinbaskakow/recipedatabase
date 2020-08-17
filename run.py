@@ -13,7 +13,7 @@ app = create_app()
 
 if __name__ == "__main__":
     
-    app.run(port=5000,debug=True)
+    app.run(debug=False, host='192.168.2.118')
 
 
 #start the webserver for the first time
