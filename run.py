@@ -24,3 +24,5 @@ if __name__ == "__main__":
     #type in export FLASK_APP=flaskblog.py für linux and mac
     #type in sst FLASK_APP=flaskblog.py for windows
 #stop the webserver
+    
+    #influxclient.close()

@@ -15,6 +15,14 @@ from datetime import datetime
 #import pandas as pd
 from dateutil.relativedelta import relativedelta
 from pathlib import Path
+from influxdb import InfluxDBClient
+
+#intialize influx client
+host='localhost'
+dbname="iobroker"
+port=8086
+influxclient = InfluxDBClient(host=host, port=port)
+influxclient.switch_database(dbname)
 
 #from flask_caching import Cache
 #timer to store vpl data periodically

@@ -3,16 +3,15 @@ from flask import render_template,Blueprint,request,flash,abort,url_for,redirect
 #from flaskblog.models import Post
 from flaskblog.wallbox.forms import SetCharginModeForm1,SetCharginModeForm2
 from flask_login import login_required,current_user
-from influxdb import InfluxDBClient
+from flaskblog import influxclient
+
 
 
 
 wallbox = Blueprint('wallbox',__name__)
 
 AllOW_CHARGINGMODES = [1,2,3]
-host='localhost'
-dbname="iobroker"
-port=8086
+
 
 #XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX Posts XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 #=================== new post =================================================
@@ -20,8 +19,8 @@ port=8086
 @login_required
 def setChargingMode():
     form = SetCharginModeForm1()
-    influxclient = InfluxDBClient(host=host, port=port)
-    influxclient.switch_database(dbname)
+    
+    
     if form.validate_on_submit():
         #for auther the backref is used
         chargingMode = int(form.content.data)
@@ -35,7 +34,7 @@ def setChargingMode():
             flash('Your charging mode has been set to {} by {}'.format(chargingMode,current_user),'success')
         else:
             flash('Mode {} is not allowed'.format(chargingMode,current_user),'danger')
-    influxclient.close()
+    
         #return redirect(url_for('main.home'))
     return render_template('setChargingMode.html',form=form,legend='SetChargingMode')
 
