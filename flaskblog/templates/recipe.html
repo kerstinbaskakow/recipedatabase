@@ -2,87 +2,47 @@
 {%extends"layout.html"%}
 <!-- to be used it needs to be wraped in a content block-->
 {%block content%}
-        <div class ="content-section">
-            <form method ="POST" action="">
-                    <!-- doble curlybraces: access variables through a template-->
-        <!-- adding a csrf token or cross side request forgery token, this is part of the protection agains attacks-->
-                {{form.hidden_tag()}}
-                <fieldset class="form-group">
-                    <legend class="border-bottom mb-4">Store your recipe here!</legend>
-                    <div class ="form-group">
-                         {{form.recipename.label(class="form-control-label")}}
-                        <!-- only if we have errors -->
-                        {%if form.recipename.errors%}
-                            <!-- username field as it is and in case that it is invalid, add an invalid class tho that field-->
-                            {{form.recipename(class="form-control from-control-lg is-invalid")}}
-                            <div class="invalid-feedback">
-                                {%for error in form.recipename.errors%}
-                                    <span>{{error}}</span>
-                                {%endfor%}
-                            </div>
-                        {%else%}
-                            {{form.recipename(class="form-control from-control-lg")}}
-                        {%endif%}        
+    <article class="media content-section">
+        <img class="rounded-circle article-img" src={{url_for('static',filename='profile_pics/' + recipe.author.image_file)}}>
+        <div class="media-body">
+            <div class="article-metadata">
+                <a class="mr-2" href="{{url_for('users.user_content',username=recipe.author.username)}}">{{recipe.author.username}}</a>
+                <small class="text-muted">{{recipe.date_posted.strftime('%Y-%m-%d')}}</small>
+                {%if recipe.author == current_user%}
+                    <div>
+                        <!-- bootstrap: a secondary button, make is small and give it some spacing (magin =1)  -->
+                        <!-- mt: margin top, mb: margin bottom-->
+                        <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{url_for('recipes.update_recipe',recipe_id=recipe.id)}}">Update Recipe</a>
+                        <!-- now make the button for deleting, this leads to a modal, within the modal a form is generated -->
+                        <button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal" data-target="#deleteModal">Delete</button>
                     </div>
-                    <div class ="form-group"> 
-                        {{form.preparation.label(class="form-control-label")}}
-                        <!-- only if we have errors -->
-                        {%if form.preparation.errors%}
-                            <!-- username field as it is and in case that it is invalid, add an invalid class tho that field-->
-                            {{form.preparation(class="form-control from-control-lg is-invalid")}}
-                            <div class="invalid-feedback">
-                                {%for error in form.preparation.errors%}
-                                    <span>{{error}}</span>
-                                {%endfor%}
-                            </div>
-                        {%else%}
-                            {{form.preparation(class="form-control from-control-lg")}}
-                        {%endif%}
-                    </div>
-                    <fieldset class="form-group">
-                         <legend class="border-bottom mb-4">Type in the ingredients to each component</legend>
-                        <div class ="form-group">
-                            {{form.component.label(class="form-control-label")}}
-                                                    <!-- only if we have errors -->
-                        {%if form.component.errors%}
-                            <!-- username field as it is and in case that it is invalid, add an invalid class tho that field-->
-                            {{form.component(class="form-control from-control-lg is-invalid")}}
-                            <div class="invalid-feedback">
-                                {%for error in form.component.errors%}
-                                    <span>{{error}}</span>
-                                {%endfor%}
-                            </div>
-                        {%else%}
-                            {{form.component(class="form-control from-control-lg")}}
-                        {%endif%}
-                        </div>
-                        <div class ="form-group">
-                            {{form.ingredients.label(class="form-control-label")}}
-                               <!-- only if we have errors -->
-                            {%if form.ingredients.errors%}
-                            <!-- username field as it is and in case that it is invalid, add an invalid class tho that field-->
-                                {{form.ingredients(class="form-control from-control-lg is-invalid")}}
-                                <div class="invalid-feedback">
-                                    {%for error in form.ingredients.errors%}
-                                        <span>{{error}}</span>
-                                    {%endfor%}
-                                </div>
-                            {%else%}
-                                {{form.ingredients(class="form-control from-control-lg")}}
-                            {%endif%}
-                        </div>
-                    </fieldset>
-                </fieldset>
-                <div class="form-group">
-                    {{form.submit(class="btn btn-outline-info")}}
-                </div>  
+                {%endif%}
+            </div>
+            <div>
+            <h2 class="article-title">{{recipe.title}}</h2>
+            <p class="article-content">{{recipe.content}}</p>
+            </div>
+        </div>
+    </article>
+    <!-- Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="deleteModalLabel">Delete Recipe?</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <!-- This makes a recipe request to delete_recipe route as a submit button-->
+            <form action="{{url_for('recipes.delete_recipe',recipe_id=recipe.id)}}" method="POST">
+                <input class="btn btn-danger" type="submit" value="Delete">
             </form>
+          </div>
+        </div>
+      </div>
     </div>
-    <!--  <div class="border-top pt-3">-->
-        <!-- small: kleiner text-->
-   <!--      <small class="text-muted">-->
-                                    <!-- a is an anchor tag -->
-           <!--  Already have an account? <a class="ml-2" href="{{url_for('login')}}">Sign In</a>-->
-      <!--   </small>-->
- <!--     </div>-->
+
 {%endblock content%}

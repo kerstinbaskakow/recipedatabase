@@ -46,6 +46,7 @@ class User(db.Model,UserMixin):
     #backref allowes us to when there is a post we use the author attribute to get the post
     #lazy  defines when sqlalchemy loads the data of the database
     post = db.relationship('Post',backref='author',lazy=True)
+    recipe = db.relationship('Recipe',backref='author',lazy=True)
     
     def get_reset_token(self,expires_sec=1800):
         s = Serializer(current_app.config['SECRET_KEY'],expires_sec)
@@ -74,3 +75,15 @@ class Post(db.Model):
     
     def __repr__(self):
         return f"Post('{self.title}','{self.date_posted}')"
+    
+class Recipe(db.Model):
+    id = db.Column(db.Integer,primary_key=True)
+    title = db.Column(db.String(100),nullable=False)
+    #be carefull! utcnow is passed as function not the value, no parenthesis!!!
+    date_posted = db.Column(db.DateTime,nullable=False,default = datetime.utcnow)
+    content = db.Column(db.Text,nullable=False)
+    #the foreignkey references the tablename, this is automatically set to lowercase, therefore 'user.id'
+    recipe_id = db.Column(db.Integer,db.ForeignKey('user.id'),nullable=False)
+    
+    def __repr__(self):
+        return f"Recipe('{self.title}','{self.date_posted}')"

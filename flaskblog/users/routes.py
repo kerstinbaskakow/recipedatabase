@@ -3,7 +3,7 @@ from flask import render_template,url_for,flash,redirect,request,Blueprint
 from flaskblog.users.forms import (RegistrationForm,LoginForm,UpdateAccountForm,
                              RequestResetForm,ResetPasswordForm)
 from flaskblog import bcrypt,db
-from flaskblog.models import Post,User
+from flaskblog.models import Post,User,Recipe
 from flaskblog.users.utils import save_picture,send_reset_email
 
 users = Blueprint('users',__name__)
@@ -106,13 +106,15 @@ def account():
 
 #=========================== sort post by user ================================   
 @users.route("/user/<string:username>")
-def user_posts(username):
+def user_content(username):
     #default page is 1
     page = request.args.get('page',1,type=int)
     user = User.query.filter_by(username = username).first_or_404()
     #amount of posts per page: per_page=5 and sort the results by date posted
     posts = Post.query.filter_by(author = user).order_by(Post.date_posted.desc()).paginate(page=page,per_page=5)
-    return render_template('user_posts.html',posts=posts,user=user)
+    recipes = Recipe.query.filter_by(author = user).order_by(Recipe.date_posted.desc()).paginate(page=page,per_page=5)
+    return render_template('user_content.html',posts=posts,user=user,recipes=recipes)
+
 
 #====================== reset request =========================================
 @users.route("/reset_password",methods=['GET','POST'])
